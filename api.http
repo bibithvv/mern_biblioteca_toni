@@ -1,0 +1,14 @@
+@host = http://localhost:3000
+@baseUrl = {{host}}/api/v1
+@contentType = application/json
+
+POST {{baseUrl}}/books
+Content-Type: {{contentType}}
+
+{
+    "title": "O Senhor dos Anéis",
+    "subtitle": "A Sociedade do Anel",
+    "author": "J.R.R Tolkien",
+    "genre": "Fantasia",
+    "cover": "https://m.media-amazon.com/images/I/81SM0D5+DwL._SL1500_.jpg"
+}
