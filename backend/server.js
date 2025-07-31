@@ -1,41 +1,41 @@
 import "dotenv/config";
+
+import path from "path";
 import express from "express";
-import mongoose from "mongoose";
 
 import { connectToDatabase } from "./config/db.js";
-import { Book } from "./model/book.model.js";
+import bookRouter from "./routes/book.routes.js";
+
+const port = process.env.PORT || 3000;
+const __dirname = path.resolve();
 
 const app = express();
 
 app.use(express.json());
 
-app.post("/api/v1/books", async (req, res) => {
-  const { title, subtitle, author, genre, cover } = req.body;
-
+app.get("/health", (req, res) => {
   try {
-    const book = new Book({ title, subtitle, author, genre, cover });
-    await book.save();
-    res.status(201).json({ success: true, data: book });
+    res.status(200).send("Server is running");
   } catch (error) {
-    console.error("Error saving book: ", error);
-    res.status(500).json({ success: false, error: "Error saving book" });
+    console.error("Error checking server health:", error);
+    res.status(500).send("Server is not running");
   }
 });
 
-app.get("/api/v1/books", async (req, res) => {
-    try {
-      const books = await Book.find();
-      res.status(200).json({ success: true, data: books });
-    } catch (error) {
-      console.error("Error fetching books: ", error);
-      res.status(500).json({ sucess: false, error: "Error fetching books" });
-    }
-  });
+app.use("/api/v1/books", bookRouter);
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
+  });
+}
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
   connectToDatabase();
 });
 
 
-//senha GU1qdX7LlDuK0kx0
+  //senha GU1qdX7LlDuK0kx0
