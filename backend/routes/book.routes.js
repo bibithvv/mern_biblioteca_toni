@@ -5,7 +5,7 @@ import {
   getBook,
   getBooks,
   updateBook,
-} from "../backend/controllers/book.controller.js";
+} from "../controllers/book.controller.js";
 import { validateBook, validatePartialBook } from "../middlewares/book.validate.js";
 
 const router = Router();

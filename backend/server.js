@@ -37,5 +37,4 @@ app.listen(port, () => {
   connectToDatabase();
 });
 
-
   //senha GU1qdX7LlDuK0kx0
